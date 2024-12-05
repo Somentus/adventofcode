@@ -1,9 +1,10 @@
 # Advent of Code
-# Day 2, Star 1
+# Day 2, Star 2
 # Output how many reports are safe.
 # Input consists of lines, each line is a report containing multiple levels.
 # A report is safe if it consists of only increasing or only decreasing levels
 # Any adjacent levels must differ by at least 1 and at most 3
+# If a report would be safe by removing just 1 level, it is deemed safe
 
 from __future__ import annotations
 
@@ -31,6 +32,18 @@ def isSafe(report: list[int]):
             return False
     return True
 
+def isSafeWithProblemDampener(report: list[int]):
+    if isSafe(report):
+        return True
+
+    backup = report[:]
+    for index in range(0, len(report)):
+        report = backup[:]
+        report.pop(index)
+        if isSafe(report):
+            return True
+    return False
+
 def main():
     inputFile = open('1.in', 'r')
     inputLines = inputFile.readlines()
@@ -39,7 +52,7 @@ def main():
     report: list[int] = []
     for line in inputLines:
         report = [int(val) for val in line.split()]
-        if isSafe(report):
+        if isSafeWithProblemDampener(report):
             sum += 1
 
     print(sum)
